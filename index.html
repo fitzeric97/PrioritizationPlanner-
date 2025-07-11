@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prospect Account Prioritization Tool</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header Section -->
+        <header class="header">
+            <div class="container">
+                <div class="header-content">
+                    <div class="logo-section">
+                        <div class="logo-icon">📊</div>
+                        <div class="header-text">
+                            <h1>Prospect Account Prioritization Tool</h1>
+                            <p class="subtitle">Powered by competitor analysis and persona matching</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <div class="container">
+                <form id="prioritizationForm" class="prioritization-form">
+                    
+                    <!-- Company Information Section -->
+                    <section class="form-section">
+                        <h2>Company Information</h2>
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="companyName" class="form-label">Your Company Name *</label>
+                                <input type="text" id="companyName" class="form-control" placeholder="Enter your company name" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="companyUrl" class="form-label">Your Company URL *</label>
+                                <input type="url" id="companyUrl" class="form-control" placeholder="https://yourcompany.com" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="industry" class="form-label">Your Company Industry *</label>
+                                <select id="industry" class="form-control" required>
+                                    <option value="">Select your industry</option>
+                                    <option value="SaaS">SaaS</option>
+                                    <option value="Technology">Technology</option>
+                                    <option value="B2B Services">B2B Services</option>
+                                    <option value="Financial Services">Financial Services</option>
+                                    <option value="Healthcare">Healthcare</option>
+                                    <option value="E-commerce">E-commerce</option>
+                                    <option value="Manufacturing">Manufacturing</option>
+                                </select>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Account List Upload Section -->
+                    <section class="form-section">
+                        <h2>Account List Upload</h2>
+                        <div class="upload-section">
+                            <div class="file-upload-area" id="fileUploadArea">
+                                <div class="upload-icon">📄</div>
+                                <p class="upload-text">Drag & drop your CSV file here or <span class="upload-link">browse</span></p>
+                                <input type="file" id="csvFile" accept=".csv" class="file-input" required>
+                            </div>
+                            <div class="file-info" id="fileInfo" style="display: none;">
+                                <p class="file-name" id="fileName"></p>
+                                <p class="file-size" id="fileSize"></p>
+                                <p class="row-count" id="rowCount"></p>
+                            </div>
+                        </div>
+                        <div class="csv-format-info">
+                            <h3>Required CSV Format:</h3>
+                            <div class="csv-sample">
+                                <code>Company Name, URL, Industry, Size, Location</code>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Competitor Analysis Section -->
+                    <section class="form-section">
+                        <h2>Competitor Analysis Options</h2>
+                        <div class="radio-group">
+                            <label class="radio-option">
+                                <input type="radio" name="competitorMethod" value="auto" checked>
+                                <span class="radio-label">Auto-detect competitors from our URL (using BuiltWith)</span>
+                            </label>
+                            <label class="radio-option">
+                                <input type="radio" name="competitorMethod" value="manual">
+                                <span class="radio-label">I'll manually enter competitors</span>
+                            </label>
+                        </div>
+                        <div class="manual-competitors" id="manualCompetitors" style="display: none;">
+                            <label for="competitorList" class="form-label">Enter competitors (one per line)</label>
+                            <textarea id="competitorList" class="form-control" placeholder="Zendesk&#10;Salesforce&#10;HubSpot" rows="4"></textarea>
+                        </div>
+                        <div class="competitor-preview" id="competitorPreview">
+                            <h3>Detected Competitors:</h3>
+                            <div class="competitor-tags" id="competitorTags">
+                                <span class="tag">Zendesk</span>
+                                <span class="tag">Salesforce</span>
+                                <span class="tag">HubSpot</span>
+                                <span class="tag">Intercom</span>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Persona Targeting Section -->
+                    <section class="form-section">
+                        <h2>Persona Targeting</h2>
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="targetPersona" class="form-label">Target Persona *</label>
+                                <select id="targetPersona" class="form-control" required>
+                                    <option value="">Select target persona</option>
+                                    <option value="Customer Support Manager">Customer Support Manager</option>
+                                    <option value="IT Manager">IT Manager</option>
+                                    <option value="Sales Director">Sales Director</option>
+                                    <option value="VP Customer Success">VP Customer Success</option>
+                                    <option value="Head of Operations">Head of Operations</option>
+                                    <option value="Chief Technology Officer">Chief Technology Officer</option>
+                                </select>
+                            </div>
+                            <div class="form-group full-width">
+                                <label for="problemDescription" class="form-label">Describe the problem your product solves *</label>
+                                <textarea id="problemDescription" class="form-control" placeholder="e.g., We help companies streamline their customer support processes and reduce response times..." rows="3" required></textarea>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Pricing Information Section -->
+                    <section class="form-section">
+                        <h2>Pricing Information</h2>
+                        <div class="pricing-info">
+                            <div class="pricing-card">
+                                <div class="pricing-header">
+                                    <h3>Enrichment Pricing</h3>
+                                    <div class="price">$0.10 <span class="price-unit">per company</span></div>
+                                </div>
+                                <div class="cost-calculator">
+                                    <div class="cost-row">
+                                        <span>Estimated companies to process:</span>
+                                        <span id="companyCount">0</span>
+                                    </div>
+                                    <div class="cost-row total">
+                                        <span>Estimated total cost:</span>
+                                        <span id="totalCost">$0.00</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Results Preview Section -->
+                    <section class="form-section">
+                        <h2>Results Preview</h2>
+                        <div class="preview-container">
+                            <div class="chart-container">
+                                <h3>Lead Scoring Methodology</h3>
+                                <img src="https://ppl-ai-code-interpreter-files.s3.amazonaws.com/web/direct-files/431ba91a3e12d56bdcb1be60a67ffc74/33d9c750-51c2-4b5e-a1ee-406c1d2af3c7/ace7af08.png" alt="Lead Scoring Chart" class="scoring-chart">
+                            </div>
+                            <div class="table-container">
+                                <table class="results-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Company Name</th>
+                                            <th>Priority Score</th>
+                                            <th>Competitors Found</th>
+                                            <th>Relevant Contacts</th>
+                                            <th>Recommended Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="previewTableBody">
+                                        <tr>
+                                            <td>TechCorp Inc</td>
+                                            <td><span class="priority-score high">92</span></td>
+                                            <td>Zendesk, Salesforce</td>
+                                            <td>Sarah Johnson (VP Customer Success)</td>
+                                            <td><span class="action-badge high">High Priority - Contact Immediately</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td>InnovateLabs</td>
+                                            <td><span class="priority-score medium">78</span></td>
+                                            <td>HubSpot, Pipedrive</td>
+                                            <td>Mike Chen (Head of Sales)</td>
+                                            <td><span class="action-badge medium">Medium Priority - Schedule Call</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td>GrowthCo</td>
+                                            <td><span class="priority-score high">85</span></td>
+                                            <td>Intercom, Drift</td>
+                                            <td>Lisa Rodriguez (Customer Support Manager)</td>
+                                            <td><span class="action-badge high">High Priority - Send Demo</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td>StartupXYZ</td>
+                                            <td><span class="priority-score low">45</span></td>
+                                            <td>None Found</td>
+                                            <td>John Smith (CEO)</td>
+                                            <td><span class="action-badge low">Low Priority - Nurture Campaign</span></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Submission Section -->
+                    <section class="form-section">
+                        <div class="submission-section">
+                            <div class="terms-checkbox">
+                                <label class="checkbox-label">
+                                    <input type="checkbox" id="termsAccepted" required>
+                                    <span class="checkmark"></span>
+                                    I agree to the <a href="#" target="_blank">Terms of Service</a> and <a href="#" target="_blank">Privacy Policy</a>
+                                </label>
+                            </div>
+                            <button type="submit" class="btn btn--primary btn--lg btn--full-width" id="submitButton">
+                                Start Enrichment Process
+                            </button>
+                            <div class="progress-indicator" id="progressIndicator" style="display: none;">
+                                <div class="progress-bar">
+                                    <div class="progress-fill" id="progressFill"></div>
+                                </div>
+                                <p class="progress-text" id="progressText">Processing your request...</p>
+                            </div>
+                        </div>
+                    </section>
+                </form>
+            </div>
+        </main>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
